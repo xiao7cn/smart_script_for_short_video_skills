@@ -1,0 +1,13 @@
+__pycache__/
+*.py[cod]
+
+# 生成的文案
+output/
+
+# 个人人设配置属于账号资产，默认不入库（模板 config/persona.example.yaml 不受影响）。
+# 如果这是你的私有仓库、想把配置一起版本化，删掉下面三行即可。
+/persona.yaml
+/persona.*.yaml
+/.short-video-script/
+
+.DS_Store
