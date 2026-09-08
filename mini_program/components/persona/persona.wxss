@@ -1,0 +1,241 @@
+.persona {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+.p-nav {
+  height: 48px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid var(--border);
+  background: rgba(245, 244, 241, 0.95);
+  flex-shrink: 0;
+}
+.nav-back {
+  font-size: 14px;
+  color: var(--accent);
+  font-weight: 500;
+}
+.nav-en {
+  margin-left: auto;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.p-scroll {
+  flex: 1;
+  height: 0;
+}
+.p-head {
+  padding: 20px 16px 16px;
+}
+.p-title-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+}
+.p-h2 {
+  flex: 1;
+  margin-top: 6px;
+}
+.edit-btn {
+  margin-top: 8px;
+  flex-shrink: 0;
+  font-size: 14px;
+  font-weight: 700;
+  color: #fff;
+  background: var(--primary);
+  border-radius: 999px;
+  padding: 6px 16px;
+}
+.p-fields {
+  padding: 0 16px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.field {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 16px;
+  padding: 16px;
+}
+.field-k {
+  font-size: 12px;
+  color: var(--primary);
+  font-weight: 700;
+}
+.field-v {
+  font-size: 15px;
+  line-height: 1.6;
+  margin-top: 6px;
+}
+.field-d {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin-top: 6px;
+  line-height: 1.6;
+}
+.field-in,
+.field-area {
+  margin-top: 8px;
+  width: 100%;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  color: var(--foreground);
+  line-height: 1.6;
+}
+.need-card {
+  border: 1px solid var(--border);
+  background: var(--card);
+  border-radius: 16px;
+  overflow: hidden;
+}
+.need-h {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.need-ul {
+  padding: 16px;
+}
+.need-li {
+  display: flex;
+  gap: 8px;
+  font-size: 14px;
+  line-height: 1.6;
+  margin-bottom: 8px;
+  color: rgba(26, 26, 30, 0.85);
+}
+.need-n {
+  font-size: 11px;
+  color: var(--primary);
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+.need-t { flex: 1; }
+.acc { color: var(--accent) !important; }
+.need-edit {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.need-in {
+  flex: 1;
+  /* 同 app.wxss 里 .input 的理由：不给高度会被基础库压到不足一行 */
+  min-height: 36px;
+  box-sizing: border-box;
+  background: rgba(237, 236, 231, 0.6);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+.need-x {
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  color: var(--muted-foreground);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.need-add-in {
+  flex: 1;
+  min-height: 36px;
+  box-sizing: border-box;
+  border: 1px dashed var(--border);
+  border-radius: 10px;
+  padding: 6px 10px;
+  font-size: 14px;
+}
+.need-add {
+  padding: 0 12px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--accent);
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+}
+.ban-box {
+  border: 1px solid rgba(63, 60, 168, 0.4);
+  background: rgba(63, 60, 168, 0.05);
+  border-radius: 16px;
+  padding: 16px;
+}
+.ban-wrap {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 10px;
+  align-items: center;
+}
+.ban-tag {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  padding: 4px 10px;
+  border: 1px solid rgba(63, 60, 168, 0.4);
+  color: var(--primary);
+  border-radius: 999px;
+  text-decoration: line-through;
+}
+.ban-edit {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid rgba(63, 60, 168, 0.4);
+  border-radius: 999px;
+  padding: 4px 6px 4px 10px;
+}
+.ban-tag-in {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--primary);
+  text-decoration: line-through;
+}
+.ban-x {
+  color: rgba(63, 60, 168, 0.6);
+  padding: 0 4px;
+}
+.ban-add {
+  min-width: 80px;
+  flex: 1;
+  font-size: 12px;
+  color: var(--primary);
+}
+.ban-tip {
+  font-size: 12px;
+  color: var(--muted-foreground);
+  margin-top: 12px;
+  line-height: 1.6;
+}
+.reset-btn {
+  width: 100%;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted-foreground);
+  border: 1px dashed var(--border);
+  border-radius: 999px;
+  padding: 10px 0;
+}
+.p-save {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 12px 16px;
+  background: rgba(245, 244, 241, 0.95);
+  border-top: 1px solid var(--border);
+  display: flex;
+  gap: 10px;
+}
+.save-main {
+  flex: 2;
+}
+.p-save .btn-ghost {
+  flex: 1;
+}

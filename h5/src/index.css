@@ -1,0 +1,138 @@
+@import 'tailwindcss';
+
+:root {
+  /* 单色编辑体系：暖中性纸面 + 墨黑 + 单一靛蓝主色 */
+  --background: #f5f4f1;
+  --foreground: #1a1a1e;
+
+  --card: #ffffff;
+  --card-foreground: #1a1a1e;
+
+  /* 主色与强调色统一为同一支靛蓝，避免多色相冲突 */
+  --primary: #3f3ca8;
+  --primary-foreground: #ffffff;
+
+  --accent: #3f3ca8;
+  --accent-foreground: #ffffff;
+
+  /* highlight 收敛为主色的极浅底，不再是抢眼的琥珀 */
+  --highlight: #eceafa;
+  --highlight-foreground: #3f3ca8;
+
+  --secondary: #edece7;
+  --secondary-foreground: #3a3a44;
+
+  --muted: #efeeea;
+  --muted-foreground: #75737d;
+
+  --border: rgba(26, 26, 30, 0.1);
+  --ring: #3f3ca8;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-highlight: var(--highlight);
+  --color-highlight-foreground: var(--highlight-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
+
+  --font-serif: 'Songti SC', 'STSong', 'SimSun', 'Noto Serif CJK SC', Georgia, serif;
+  --font-sans: system-ui, -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
+    'Noto Sans CJK SC', sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', Menlo, Consolas, 'Liberation Mono', monospace;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background: var(--background);
+  color: var(--foreground);
+  -webkit-font-smoothing: antialiased;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--accent-foreground);
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: transparent transparent;
+}
+*::-webkit-scrollbar {
+  width: 7px;
+  height: 7px;
+}
+*:hover::-webkit-scrollbar-thumb {
+  background: rgba(63, 60, 168, 0.28);
+  border-radius: 8px;
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideup {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+.font-mono {
+  font-family: var(--font-mono);
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}

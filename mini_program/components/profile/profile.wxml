@@ -1,0 +1,112 @@
+<view class="profile-root">
+<persona-panel
+  wx:if="{{showPersona}}"
+  persona="{{persona}}"
+  bind:back="closePersona"
+  bind:change="onPersonaChange"
+  bind:reset="onPersonaReset"
+/>
+
+<scroll-view wx:else scroll-y class="profile" enhanced show-scrollbar="{{false}}">
+  <view class="id-wrap">
+    <view class="id-card" style="background: {{isWechat ? '#1677ff' : '#1a1a1e'}};">
+      <view class="avatar font-serif">{{initial}}</view>
+      <view class="id-txt">
+        <view class="font-serif id-name">{{user.nickname}}</view>
+        <view class="font-mono id-sub">{{isWechat ? '微信登录' : '手机号登录'}} · {{user.account}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="pad">
+    <view class="credit">
+      <view>
+        <view class="font-mono credit-k">剩余额度</view>
+        <view class="credit-n">
+          <text class="font-serif credit-num">{{credits}}</text>
+          <text class="credit-unit">条</text>
+        </view>
+        <view class="credit-tip">每生成一条口播文案消耗 1 条额度</view>
+      </view>
+      <view class="credit-btn" bindtap="openRecharge">充值</view>
+    </view>
+  </view>
+
+  <view class="stats">
+    <view class="stat">
+      <view class="font-serif stat-n">{{stats.total}}</view>
+      <view class="stat-l">文案总数</view>
+    </view>
+    <view class="stat">
+      <view class="font-serif stat-n">{{stats.generated}}</view>
+      <view class="stat-l">本机生成</view>
+    </view>
+  </view>
+
+  <view class="pad">
+    <view class="menu">
+      <view class="row" bindtap="openPersona">
+        <view class="row-t">
+          <view class="font-serif row-title">人设档案</view>
+          <view class="row-desc">{{persona.model || '未命名'}} · 生成时自动注入</view>
+        </view>
+        <text class="row-arr">›</text>
+      </view>
+      <view class="row">
+        <view class="row-t">
+          <view class="font-serif row-title">账号与安全</view>
+          <view class="row-desc">账号：{{user.account}}</view>
+        </view>
+        <text class="row-arr">›</text>
+      </view>
+      <view class="row">
+        <view class="row-t">
+          <view class="font-serif row-title">偏好设置</view>
+          <view class="row-desc">生成配比、默认脚本类型</view>
+        </view>
+        <text class="row-arr">›</text>
+      </view>
+      <view class="row last">
+        <view class="row-t">
+          <view class="font-serif row-title">关于闪创工厂</view>
+          <view class="row-desc">AI 短视频口播文案 · 小程序</view>
+        </view>
+        <text class="row-arr">›</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="logout-wrap">
+    <view class="btn-outline-primary" bindtap="logout">退出登录</view>
+  </view>
+
+  <view wx:if="{{showRecharge}}" class="mask mask-end" catchtap="closeRecharge">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-handle"></view>
+      <view class="font-serif sheet-title">额度充值</view>
+      <view class="sheet-sub">充值越多，赠送越多</view>
+      <view class="pack-grid">
+        <view
+          wx:for="{{packs}}"
+          wx:key="packId"
+          class="pack {{packSel === index ? 'pack-on' : ''}}"
+          data-i="{{index}}"
+          bindtap="selPack"
+        >
+          <view wx:if="{{item.bonus > 0}}" class="pack-badge">送 {{item.bonus}}</view>
+          <view class="pack-base">
+            <text class="font-serif pack-n">{{item.base}}</text>
+            <text class="pack-u">条</text>
+          </view>
+          <view wx:if="{{item.bonus > 0}}" class="pack-real">实得 {{item.total}} 条</view>
+          <view class="font-mono pack-price">￥{{item.yuan}}</view>
+        </view>
+      </view>
+      <view class="btn-primary" style="margin-top: 24px;" bindtap="confirmRecharge">
+        支付 ￥{{packs[packSel].yuan}} · 到账 {{packs[packSel].total}} 条
+      </view>
+      <view class="sheet-cancel" bindtap="closeRecharge">取消</view>
+    </view>
+  </view>
+</scroll-view>
+</view>

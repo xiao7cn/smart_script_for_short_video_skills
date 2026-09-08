@@ -1,0 +1,103 @@
+server:
+  port: 8080
+  servlet:
+    encoding:
+      charset: UTF-8
+      force: true
+
+spring:
+  application:
+    name: shanchuang-server
+  datasource:
+    url: ${DB_URL:jdbc:mysql://127.0.0.1:3306/shanchuang?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false}
+    username: ${DB_USER:root}
+    password: ${DB_PASSWORD:root}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      maximum-pool-size: 16
+      minimum-idle: 2
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 500MB
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: Asia/Shanghai
+    default-property-inclusion: always
+
+mybatis-plus:
+  global-config:
+    db-config:
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+      id-type: auto
+  configuration:
+    map-underscore-to-camel-case: true
+
+app:
+  jwt:
+    secret: ${JWT_SECRET:shanchuang-dev-secret-please-change-in-production-0123456789}
+    expire-seconds: 7200
+  sms:
+    # 非生产环境把验证码回显给前端，对应原型里「演示验证码」那一行
+    echo-code: ${SMS_ECHO_CODE:true}
+    code-ttl-seconds: 300
+    resend-interval-seconds: 60
+    daily-limit: 10
+  credit:
+    free-grant: 20
+    packs:
+      - { packId: p19, priceFen: 1900, base: 30, bonus: 0 }
+      - { packId: p59, priceFen: 5900, base: 100, bonus: 15 }
+      - { packId: p149, priceFen: 14900, base: 300, bonus: 60 }
+      - { packId: p399, priceFen: 39900, base: 1000, bonus: 300 }
+  generate:
+    max-count: 20
+    # 批内并发：一批 20 条全打上去会触发 provider 限流
+    item-concurrency: 3
+    max-running-tasks-per-user: 2
+  storage:
+    dir: ${STORAGE_DIR:./data/uploads}
+
+# Harness：pi | mock | deepseek
+# 库里 sv_harness_config.is_default=1 的记录优先；这里是启动兜底
+harness:
+  provider: ${HARNESS_PROVIDER:pi}
+  endpoint: ${HARNESS_ENDPOINT:http://127.0.0.1:8790}
+  timeout-ms: 300000
+
+# 模型场景默认值：库里 sv_ai_model_config 没有该场景时用这里兜底
+ai:
+  default:
+    provider: deepseek
+    modelId: deepseek-chat
+    temperature: 0.8
+    maxTokens: 4096
+    thinking: "off"
+    apiKeyEnv: DEEPSEEK_API_KEY
+    maxSteps: 1
+    timeoutMs: 180000
+  scenes:
+    TOPIC_TITLE:
+      temperature: 0.9
+      maxTokens: 2048
+      timeoutMs: 60000
+    SCRIPT_GENERATE:
+      temperature: 0.8
+    SCRIPT_DEAI:
+      temperature: 0.7
+    SCRIPT_REWRITE:
+      temperature: 0.6
+      maxTokens: 8192
+      maxSteps: 6
+      timeoutMs: 300000
+    VIDEO_EXTRACT:
+      temperature: 0.3
+      maxTokens: 8192
+      maxSteps: 8
+      timeoutMs: 600000
+
+logging:
+  level:
+    com.shanchuang: INFO

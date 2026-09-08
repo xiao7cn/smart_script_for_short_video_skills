@@ -1,0 +1,4 @@
+{
+  "desc": "闪创工厂不对外搜",
+  "rules": [{ "action": "disallow", "page": "*" }]
+}

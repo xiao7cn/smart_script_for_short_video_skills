@@ -1,0 +1,9 @@
+{
+  "usingComponents": {
+    "auth-panel": "../../components/auth/auth",
+    "builder-panel": "../../components/builder/builder",
+    "library-panel": "../../components/library/library",
+    "profile-panel": "../../components/profile/profile"
+  },
+  "disableScroll": true
+}

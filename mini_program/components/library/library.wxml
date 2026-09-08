@@ -1,0 +1,95 @@
+<view class="lib">
+  <scroll-view scroll-y class="lib-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="lib-head">
+      <view class="kicker">SCRIPT LIBRARY · 文案库</view>
+      <view class="h2-serif">共 {{total}} 条 · 选题 / 标题 / 脚本</view>
+      <view class="sub lib-sub">
+        {{genCount > 0 ? '其中 ' + genCount + ' 条为本机生成' : '还没有生成记录，去「工作台」出一批'}}
+        <text class="lib-sub-dim"> · 左滑卡片可删除</text>
+      </view>
+    </view>
+
+    <view wx:if="{{progress}}" class="prog">
+      <view class="prog-card">
+        <view class="prog-top">
+          <view class="prog-dot"></view>
+          <text class="font-serif prog-title">后台正在生成，请稍后</text>
+          <text class="font-mono prog-count">{{progress.settled}} / {{progress.total}}</text>
+        </view>
+        <view class="prog-bar">
+          <view wx:if="{{progress.measurable}}" class="prog-fill" style="width: {{progress.percent}}%;"></view>
+          <view wx:else class="prog-pulse"></view>
+        </view>
+        <view class="prog-meta">
+          <text wx:if="{{progress.running > 0}}">{{progress.running}} 条正在写</text>
+          <text wx:if="{{progress.running > 0 && progress.settled > 0}}"> · </text>
+          <text wx:if="{{progress.settled > 0}}">已完成 {{progress.doneCount}} 条</text>
+          <text wx:if="{{progress.running > 0 || progress.settled > 0}}"> · </text>
+          已用 {{elapsed}} 秒
+          <text wx:if="{{progress.failCount > 0}}" class="prog-fail"> · {{progress.failCount}} 条未过自检，额度已退回</text>
+        </view>
+        <view class="prog-tip">每条要先出选题标题、再写正文、最后单独去一遍 AI 味，稍慢是正常的。</view>
+      </view>
+    </view>
+
+    <view class="lib-filters">
+      <scroll-view scroll-x class="filter-row" enhanced show-scrollbar="{{false}}">
+        <view
+          wx:for="{{topicTypeFilters}}"
+          wx:key="key"
+          class="filter-chip"
+          style="{{item.active ? 'background:' + item.color + ';color:#fff;border-color:transparent;' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="applyTopic"
+        >{{item.key}}</view>
+      </scroll-view>
+      <scroll-view scroll-x class="filter-row" enhanced show-scrollbar="{{false}}">
+        <view
+          wx:for="{{scriptFilters}}"
+          wx:key="key"
+          class="filter-chip"
+          style="{{item.active ? 'background:' + item.color + ';color:#fff;border-color:transparent;' : ''}}"
+          data-key="{{item.key}}"
+          bindtap="applyScript"
+        >{{item.label}}</view>
+      </scroll-view>
+    </view>
+
+    <view class="lib-list">
+      <view wx:for="{{list}}" wx:key="id" class="swipe">
+        <view class="swipe-del" data-id="{{item.id}}" bindtap="onDelete">删除</view>
+        <view
+          class="swipe-front"
+          style="transform: translateX({{swipeId === item.id ? swipeDx : 0}}px); transition: {{dragging && swipeId === item.id ? 'none' : 'transform .22s cubic-bezier(.2,.8,.2,1)'}};"
+          data-id="{{item.id}}"
+          data-item="{{item}}"
+          bindtap="openItem"
+          bindtouchstart="onTouchStart"
+          bindtouchmove="onTouchMove"
+          bindtouchend="onTouchEnd"
+          bindtouchcancel="onTouchEnd"
+        >
+          <view class="script-card">
+            <view class="card-top">
+              <text class="tag" style="background: {{item.typeBg}};color: {{item.typeColor}};font-weight:700;">{{item.scriptType}}</text>
+              <text wx:if="{{item.generated}}" class="tag gen-tag">生成</text>
+              <text class="font-mono words">{{item.words}} 字</text>
+            </view>
+            <view class="font-serif card-title">{{item.title}}</view>
+            <view class="card-topic">选题 · {{item.topic}}</view>
+            <view class="card-foot">
+              <view class="card-tags">
+                <text class="tag" style="background: {{item.topicBg}};color: {{item.topicColor}};">{{item.topicType}}</text>
+                <text class="tag muted-tag">{{item.element}}</text>
+              </view>
+              <text class="font-mono card-time">🕘 {{item.time}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view wx:if="{{list.length === 0}}" class="empty">该组合下暂无文案，去「工作台」生成一批吧</view>
+    </view>
+  </scroll-view>
+
+  <script-reader wx:if="{{open}}" item="{{open}}" bind:close="closeReader" bind:toast="onToast" />
+</view>

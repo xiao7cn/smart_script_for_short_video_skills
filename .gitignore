@@ -11,3 +11,21 @@ output/
 /.short-video-script/
 
 .DS_Store
+
+# 模型密钥。只放本地，绝不入库——数据库里存的是环境变量名，不是密钥本身
+.env
+.env.*
+!.env.example
+
+# 服务器 SSH 私钥与连接信息。deploy/ 目录本身要入库（部署脚本在里面），
+# 所以这里按文件排除，不能整个目录忽略
+*.pem
+*.key
+deploy/remote_server_info.md
+
+# 构建产物与依赖
+node_modules/
+dist/
+target/
+.run/
+data/uploads/

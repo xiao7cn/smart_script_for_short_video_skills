@@ -338,11 +338,21 @@ def strip_punctuation(text: str) -> str:
 
 def normalize(text: str) -> str:
     text = text.strip()
-    text = re.sub(r"[ \t]+", "", text)                       # 中文里的空格多为 ASR 噪声
+    text = squeeze_spaces(text)
     text = to_fullwidth_punctuation(text)
     text = re.sub(r"([，。！？、；：])\1+", r"\1", text)        # 叠标点
     text = re.sub(r"(.)\1{3,}", r"\1\1", text)               # 同字连续 4 次以上多为幻听
     return text
+
+
+def squeeze_spaces(text: str) -> str:
+    """中文字符之间的空格是 ASR 噪声，删掉；英文单词之间的空格是词边界，留着。
+
+    一刀切删空格会把技术类口播里的 "Agent Skill" 粘成 "AgentSkill"、
+    "GPT 4" 粘成 "GPT4"，拆解时看着别扭，交给下游改写更容易出错。
+    """
+    text = re.sub(r"[ \t]+", " ", text)
+    return re.sub(r"(?<![A-Za-z0-9]) | (?![A-Za-z0-9])", "", text)
 
 
 def to_fullwidth_punctuation(text: str) -> str:
@@ -355,7 +365,7 @@ def to_fullwidth_punctuation(text: str) -> str:
 
 
 def to_script(sentences: list[dict]) -> str:
-    """一句一行，便于朗读比对。"""
+    """一句一行的口播原文，不要带时间戳。时间轴只写进 rhythm.txt / segments.json。"""
     return "\n".join(sentence["text"].strip() for sentence in sentences if sentence["text"].strip())
 
 

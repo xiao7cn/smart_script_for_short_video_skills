@@ -1,0 +1,115 @@
+<view class="persona">
+  <view class="p-nav">
+    <text class="nav-back" bindtap="back">← 我的</text>
+    <text class="font-mono nav-en">PERSONA</text>
+  </view>
+
+  <scroll-view scroll-y class="p-scroll" enhanced show-scrollbar="{{false}}">
+    <view class="p-head">
+      <view class="kicker">PERSONA · 固定人设</view>
+      <view class="p-title-row">
+        <view class="h2-serif p-h2">{{editing ? draft.model : persona.model || '未命名人设'}} · 人设档案</view>
+        <view wx:if="{{!editing}}" class="edit-btn" bindtap="startEdit">修改</view>
+      </view>
+      <view class="sub">{{editing ? '编辑完成后点击底部「保存」，修改才会生效。' : '这些是每次生成都会注入的固定设定。点右上角「修改」进入编辑。'}}</view>
+    </view>
+
+    <view wx:if="{{!editing}}" class="p-fields">
+      <view class="field">
+        <view class="font-mono field-k">人设模型</view>
+        <view class="font-serif field-v">{{persona.model}}</view>
+        <view class="field-d">{{persona.modelDesc}}</view>
+      </view>
+      <view class="field">
+        <view class="font-mono field-k">身份定位</view>
+        <view class="font-serif field-v">{{persona.identity}}</view>
+      </view>
+      <view class="field">
+        <view class="font-mono field-k">价值定位</view>
+        <view class="font-serif field-v">{{persona.value}}</view>
+      </view>
+      <view class="field">
+        <view class="font-mono field-k">表达风格</view>
+        <view class="font-serif field-v">{{persona.tone}}</view>
+      </view>
+      <view class="field">
+        <view class="font-mono field-k">目标人群</view>
+        <view class="font-serif field-v">{{persona.audience}}</view>
+      </view>
+      <view class="need-card">
+        <view class="need-h"><text class="font-mono field-k">用户需求</text></view>
+        <view class="need-ul">
+          <view wx:for="{{persona.needs}}" wx:key="index" class="need-li">
+            <text class="font-mono need-n">{{index < 9 ? '0' : ''}}{{index + 1}}</text>
+            <text class="need-t">{{item}}</text>
+          </view>
+        </view>
+      </view>
+      <view class="ban-box">
+        <view class="font-mono field-k">合规红线 · 通篇禁用词</view>
+        <view class="ban-wrap">
+          <text wx:for="{{persona.banned}}" wx:key="*this" class="ban-tag">{{item}}</text>
+        </view>
+        <view class="ban-tip">拒绝贩卖焦虑与夸大吹嘘，用数据与事实说话。真诚是最高级的技巧。</view>
+      </view>
+    </view>
+
+    <view wx:else class="p-fields">
+      <view class="field">
+        <view class="font-mono field-k">人设模型</view>
+        <input class="field-in" value="{{draft.model}}" data-k="model" bindinput="setField" />
+      </view>
+      <view class="field">
+        <view class="font-mono field-k">模型说明</view>
+        <textarea class="field-area" value="{{draft.modelDesc}}" data-k="modelDesc" bindinput="setField" auto-height />
+      </view>
+      <view class="field">
+        <view class="font-mono field-k">身份定位</view>
+        <textarea class="field-area" value="{{draft.identity}}" data-k="identity" bindinput="setField" auto-height />
+      </view>
+      <view class="field">
+        <view class="font-mono field-k">价值定位</view>
+        <textarea class="field-area" value="{{draft.value}}" data-k="value" bindinput="setField" auto-height />
+      </view>
+      <view class="field">
+        <view class="font-mono field-k">表达风格</view>
+        <input class="field-in" value="{{draft.tone}}" data-k="tone" bindinput="setField" />
+      </view>
+      <view class="field">
+        <view class="font-mono field-k">目标人群</view>
+        <textarea class="field-area" value="{{draft.audience}}" data-k="audience" bindinput="setField" auto-height />
+      </view>
+      <view class="need-card">
+        <view class="need-h"><text class="font-mono field-k acc">用户需求</text></view>
+        <view class="need-ul">
+          <view wx:for="{{draft.needs}}" wx:key="index" class="need-edit">
+            <text class="font-mono need-n acc">{{index < 9 ? '0' : ''}}{{index + 1}}</text>
+            <input class="need-in" value="{{item}}" data-i="{{index}}" bindinput="setNeed" />
+            <view class="need-x" data-i="{{index}}" bindtap="delNeed">✕</view>
+          </view>
+          <view class="need-edit">
+            <input class="need-add-in" placeholder="补充一条用户痛点…" value="{{needDraft}}" bindinput="onNeedDraft" confirm-type="done" bindconfirm="addNeed" />
+            <view class="need-add" bindtap="addNeed">添加</view>
+          </view>
+        </view>
+      </view>
+      <view class="ban-box">
+        <view class="font-mono field-k">合规红线 · 通篇禁用词</view>
+        <view class="ban-wrap">
+          <view wx:for="{{draft.banned}}" wx:key="*this" class="ban-edit">
+            <text class="ban-tag-in">{{item}}</text>
+            <text class="ban-x" data-v="{{item}}" bindtap="delBan">✕</text>
+          </view>
+          <input class="ban-add" placeholder="加禁用词" value="{{banDraft}}" bindinput="onBanDraft" confirm-type="done" bindconfirm="addBan" />
+        </view>
+      </view>
+      <view class="reset-btn" bindtap="reset">恢复为默认人设</view>
+      <view style="height: 88px;"></view>
+    </view>
+  </scroll-view>
+
+  <view wx:if="{{editing}}" class="p-save">
+    <view class="btn-ghost" bindtap="cancel">取消</view>
+    <view class="btn-primary save-main" bindtap="save">保存</view>
+  </view>
+</view>

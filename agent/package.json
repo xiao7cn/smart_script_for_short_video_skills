@@ -1,0 +1,26 @@
+{
+  "name": "shanchuang-agent",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "闪创工厂 Agent 运行时：以 pi 为 harness，对外暴露与 harness 实现无关的 HTTP 契约",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "start": "node dist/server.js",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "node --test dist-test/*.test.js",
+    "pretest": "tsc -p tsconfig.test.json"
+  },
+  "dependencies": {
+    "@earendil-works/pi-agent-core": "^0.85.0",
+    "@earendil-works/pi-ai": "^0.85.0",
+    "express": "^5.1.0"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0"
+  }
+}

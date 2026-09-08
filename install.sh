@@ -4,7 +4,7 @@
 
 set -euo pipefail
 
-ALL_SKILLS="short-video-script video-script-extract"
+ALL_SKILLS="short-video-script video-script-extract video-script-rewrite douyin-benchmark-accounts douyin-benchmark-videos"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 MODE="copy"        # copy | link
@@ -26,8 +26,11 @@ usage() {
   all       全部
 
 Skill（不填则安装全部）:
-  --skill short-video-script     短视频口播文案生成
-  --skill video-script-extract   对标视频文案抽取与结构拆解
+  --skill short-video-script           短视频口播文案生成
+  --skill video-script-extract         对标视频文案抽取与结构拆解
+  --skill video-script-rewrite         基于原文拆解重写口播（洗稿）
+  --skill douyin-benchmark-accounts    按关键词搜寻抖音对标账号
+  --skill douyin-benchmark-videos      按关键词搜寻抖音对标视频并抽文案
 
 安装位置:
   个人级（默认）        claude: ~/.claude/skills/    cursor: ~/.cursor/skills/    codex: ~/.agents/skills/
@@ -41,7 +44,7 @@ Skill（不填则安装全部）:
   -h, --help        显示本帮助
 
 示例:
-  ./install.sh                                  # 两个 skill 装到三个平台，个人级
+  ./install.sh                                  # 五个 skill 装到三个平台，个人级
   ./install.sh cursor --link                    # 只装 Cursor，符号链接
   ./install.sh claude --skill short-video-script # 只把文案 skill 装到 Claude
   ./install.sh all --uninstall                  # 从三个平台移除
@@ -168,14 +171,21 @@ else
   2. 重启 Claude Code / Cursor / Codex 会话（skill 索引在会话启动时加载）。
 
 想用对标拆解，再装一个 ASR 后端（三选一）：
-    pip install faster-whisper       # 本地，推荐
-    brew install whisper-cpp         # 本地，Apple Silicon 更快
-    export OPENAI_API_KEY=sk-...     # 云端，免安装
+    python3 -m venv ~/.short-video-script/venv
+    ~/.short-video-script/venv/bin/pip install faster-whisper   # 本地，推荐
+    brew install whisper-cpp                                    # 本地，Apple Silicon 更快
+    export OPENAI_API_KEY=sk-...                                # 云端，免安装
   自检：python3 $REPO_ROOT/skills/video-script-extract/scripts/transcribe.py --list-backends
+
+想用抖音搜寻（douyin-benchmark-*），需要浏览器侧准备：
+  1. 安装 Browser MCP 扩展并在 Cursor 的 MCP 配置里启用
+  2. 每次使用前，在浏览器工具栏点击扩展图标 → Connect（这一步必须手动）
+  3. 保持抖音已登录状态
 
 调用方式：
   Claude Code   /short-video-script  或直接说「帮我写 5 条短视频口播文案」
   Cursor        直接描述需求，或 @ 提及 skill 名
   Codex         \$short-video-script
+  洗稿          直接说「按这篇拆解洗稿」或 @video-script-rewrite
 EOF
 fi

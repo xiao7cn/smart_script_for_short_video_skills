@@ -1,0 +1,60 @@
+<view class="page-root" style="padding-top: {{statusBarHeight}}px;">
+  <auth-panel wx:if="{{!user}}" bind:auth="onAuth" />
+
+  <block wx:else>
+    <view class="app-header">
+      <view class="app-header-logo">
+        <image src="/assets/logo.png" mode="aspectFit" />
+      </view>
+      <view>
+        <view class="app-header-title">闪创工厂</view>
+        <view class="app-header-en">AI SHORT-VIDEO SCRIPT STUDIO</view>
+      </view>
+      <view class="app-header-badge">小程序</view>
+    </view>
+
+    <view class="main-pane">
+      <builder-panel wx:if="{{tab === 'builder'}}" persona="{{persona}}" bind:generate="onGenerate" />
+      <library-panel
+        wx:if="{{tab === 'library'}}"
+        items="{{items}}"
+        total="{{total}}"
+        initialFilter="{{libFilter}}"
+        task="{{task}}"
+        bind:filterchange="onFilter"
+        bind:delete="onDelete"
+        bind:toast="onToast"
+      />
+      <profile-panel
+        wx:if="{{tab === 'profile'}}"
+        user="{{user}}"
+        stats="{{stats}}"
+        credits="{{credits}}"
+        persona="{{persona}}"
+        bind:personachange="onPersonaChange"
+        bind:personareset="onPersonaReset"
+        bind:recharge="onRecharge"
+        bind:logout="onLogout"
+      />
+      <view wx:if="{{toast}}" class="toast">{{toast}}</view>
+    </view>
+
+    <view class="tab-bar safe-bottom">
+      <view class="tab-item" data-tab="builder" bindtap="setTab">
+        <view wx:if="{{tab === 'builder'}}" class="tab-item-bar"></view>
+        <view class="tab-item-label {{tab === 'builder' ? 'tab-on' : 'tab-off'}}">工作台</view>
+        <view class="tab-item-en {{tab === 'builder' ? 'tab-en-on' : 'tab-en-off'}}">MAKE</view>
+      </view>
+      <view class="tab-item" data-tab="library" bindtap="setTab">
+        <view wx:if="{{tab === 'library'}}" class="tab-item-bar"></view>
+        <view class="tab-item-label {{tab === 'library' ? 'tab-on' : 'tab-off'}}">文案库</view>
+        <view class="tab-item-en {{tab === 'library' ? 'tab-en-on' : 'tab-en-off'}}">SCRIPTS</view>
+      </view>
+      <view class="tab-item" data-tab="profile" bindtap="setTab">
+        <view wx:if="{{tab === 'profile'}}" class="tab-item-bar"></view>
+        <view class="tab-item-label {{tab === 'profile' ? 'tab-on' : 'tab-off'}}">我的</view>
+        <view class="tab-item-en {{tab === 'profile' ? 'tab-en-on' : 'tab-en-off'}}">ME</view>
+      </view>
+    </view>
+  </block>
+</view>

@@ -1,0 +1,107 @@
+<view class="reader">
+  <view class="reader-nav">
+    <text class="nav-back" bindtap="back">← 返回</text>
+    <text class="font-mono nav-no">NO.{{item.seqNo < 10 ? '0' : ''}}{{item.seqNo}}</text>
+  </view>
+
+  <scroll-view scroll-y class="reader-body" enhanced show-scrollbar="{{false}}">
+    <view class="reader-meta">
+      <view class="meta-tags">
+        <text class="tag" style="background: {{cBg}};color: {{c}};font-weight:700;">{{item.scriptType}}</text>
+        <text wx:if="{{item.generated}}" class="tag gen-tag">本机生成</text>
+      </view>
+      <view class="font-serif reader-title">{{item.title}}</view>
+      <view class="meta-box">
+        <view class="meta-row">
+          <text class="font-mono meta-k">选题</text>
+          <text class="meta-v">{{item.topic}}</text>
+        </view>
+        <view class="meta-row">
+          <text class="font-mono meta-k">结构</text>
+          <text class="meta-v">{{structure}}</text>
+        </view>
+        <view class="meta-row">
+          <text class="font-mono meta-k">参数</text>
+          <text class="meta-v">{{item.topicType}} ｜ {{item.source}}</text>
+        </view>
+        <view class="meta-row">
+          <text class="font-mono meta-k">宫格</text>
+          <text class="meta-v">{{item.grid}} ＋ {{item.element}}</text>
+        </view>
+        <view class="meta-row last">
+          <text class="font-mono meta-k">生成时间</text>
+          <text class="meta-v">{{item.createdAt}}</text>
+        </view>
+      </view>
+
+      <view wx:if="{{detail.needsMaterial}}" class="need-box">
+        <text class="need-b">需替换真实素材：</text>{{detail.needsMaterial}}
+      </view>
+
+      <view wx:if="{{item.hasBreakdown}}" class="bd-entry" bindtap="openBreakdown">
+        <view class="bd-ico">⚡</view>
+        <view class="bd-txt">
+          <view class="font-serif bd-t">原文案 + 爆款拆解</view>
+          <view class="bd-d">这条由对标爆款拆解重写，看原文与拆解逻辑</view>
+        </view>
+        <text class="bd-arrow">→</text>
+      </view>
+    </view>
+
+    <view class="body-wrap">
+      <view class="body-head">
+        <text class="font-mono body-k">正文 · 口播稿</text>
+        <text class="font-mono body-k">约 {{item.words}} 字</text>
+      </view>
+      <view class="article">
+        <view wx:for="{{paras}}" wx:key="index" class="para">{{item}}</view>
+      </view>
+    </view>
+  </scroll-view>
+
+  <view class="reader-foot">
+    <view class="btn-primary" bindtap="copy">{{copied ? '已复制到剪贴板 ✓' : '复制标题 + 口播文案'}}</view>
+  </view>
+
+  <view wx:if="{{showBreakdown && detail.breakdown}}" class="bd">
+    <view class="reader-nav">
+      <text class="nav-back" bindtap="closeBreakdown">← 返回文案</text>
+      <text class="font-mono nav-no">对标爆款拆解</text>
+    </view>
+    <scroll-view scroll-y class="bd-body" enhanced show-scrollbar="{{false}}">
+      <view class="bd-sec">
+        <view class="kicker mb8">对标来源</view>
+        <view wx:if="{{detail.breakdown.autoSearch}}" class="auto-line">
+          <view class="mini-ico">⚡</view>
+          由系统自动检索的同选题高赞爆款
+        </view>
+        <view wx:if="{{detail.breakdown.refs && detail.breakdown.refs.length}}" class="ref-ul">
+          <view wx:for="{{detail.breakdown.refs}}" wx:key="index" class="ref-li">{{item}}</view>
+        </view>
+        <view wx:elif="{{!detail.breakdown.autoSearch}}" class="muted">未附对标链接</view>
+      </view>
+      <view class="bd-sec">
+        <view class="kicker mb8">原文案 · 爆款口播</view>
+        <view class="orig">
+          <view wx:for="{{originalParas}}" wx:key="index" class="orig-p">{{item}}</view>
+        </view>
+      </view>
+      <view class="bd-sec">
+        <view class="kicker mb8">爆款拆解 · 它为什么火</view>
+        <view wx:for="{{detail.breakdown.points}}" wx:key="index" class="pt">
+          <view class="pt-h">
+            <text class="tag pt-n">{{index < 9 ? '0' : ''}}{{index + 1}}</text>
+            <text class="font-serif pt-l">{{item.label}}</text>
+          </view>
+          <view class="pt-d">{{item.detail}}</view>
+        </view>
+      </view>
+      <view class="bd-sec pb">
+        <view class="kicker mb8">二次创作 · 我们改了什么</view>
+        <view class="rewrite">
+          <view wx:for="{{rewriteParas}}" wx:key="index" class="rewrite-p">{{item}}</view>
+        </view>
+      </view>
+    </scroll-view>
+  </view>
+</view>

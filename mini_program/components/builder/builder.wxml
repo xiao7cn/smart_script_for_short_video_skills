@@ -1,0 +1,206 @@
+<view class="builder">
+  <view class="builder-progress">
+    <view class="bars">
+      <view wx:for="{{view.bars}}" wx:key="id" class="bar" style="background: {{item.bg}};"></view>
+    </view>
+    <view class="progress-row">
+      <text class="font-mono progress-label">{{view.stepLabel}}</text>
+      <text wx:if="{{step > 0}}" class="progress-back" bindtap="back">← 上一步</text>
+    </view>
+  </view>
+
+  <scroll-view scroll-y class="builder-body" enhanced show-scrollbar="{{false}}">
+    <view class="step-intro">
+      <view class="kicker">{{view.kicker}}</view>
+      <view class="h2-serif step-title">{{view.title}}</view>
+      <view class="sub step-sub">{{view.sub}}</view>
+
+      <!-- 选题类型 -->
+      <view wx:if="{{view.current === 'topicType'}}" class="col-gap">
+        <view
+          wx:for="{{view.topicTypes}}"
+          wx:key="key"
+          class="card-option"
+          style="{{item.active ? 'background:' + item.bg + ';border-color:' + item.border + ';' : ''}}"
+          data-k="topicType"
+          data-v="{{item.key}}"
+          bindtap="toggle"
+        >
+          <view class="card-head">
+            <view class="card-head-l">
+              <view class="dot" style="background: {{item.color}};"></view>
+              <text class="card-option-title">{{item.name}}</text>
+            </view>
+            <text class="tag" style="background: {{item.tagBg}};color: {{item.color}};">{{item.tag}}</text>
+          </view>
+          <view class="card-option-desc">{{item.desc}}</view>
+        </view>
+      </view>
+
+      <!-- 选题来源 -->
+      <view wx:if="{{view.current === 'source'}}" class="col-gap">
+        <view
+          wx:for="{{view.topicSources}}"
+          wx:key="key"
+          class="card-option"
+          style="{{item.active ? 'background:' + item.bg + ';border-color:' + item.border + ';' : ''}}"
+          data-k="source"
+          data-v="{{item.key}}"
+          bindtap="toggle"
+        >
+          <view class="card-head">
+            <view class="card-head-l">
+              <view class="dot" style="background: {{item.color}};"></view>
+              <text class="card-option-title">{{item.key}}</text>
+            </view>
+            <text wx:if="{{!item.ready}}" class="tag" style="background: {{item.tagBg}};color: {{item.color}};">需补素材</text>
+          </view>
+          <view class="card-option-desc">{{item.desc}}</view>
+          <view wx:if="{{item.note}}" class="card-note">＊{{item.note}}</view>
+        </view>
+      </view>
+
+      <!-- 对标视频 -->
+      <view wx:if="{{view.current === 'refs'}}">
+        <view class="auto-card {{view.autoSearch ? 'auto-on' : ''}}" bindtap="toggleAuto">
+          <view class="auto-ico {{view.autoSearch ? 'auto-ico-on' : ''}}">⚡</view>
+          <view class="auto-txt">
+            <view class="font-serif auto-title">自动搜索爆款视频</view>
+            <view class="auto-desc">由系统按你的选题自动检索高赞对标，无需手动粘贴</view>
+          </view>
+          <view class="auto-check {{view.autoSearch ? 'auto-check-on' : ''}}">{{view.autoSearch ? '✓' : ''}}</view>
+        </view>
+        <view class="or-row">
+          <view class="or-line"></view>
+          <text class="font-mono or-txt">或手动添加链接</text>
+          <view class="or-line"></view>
+        </view>
+        <view class="ref-list">
+          <view wx:for="{{view.refs}}" wx:key="index" class="ref-row">
+            <input class="ref-input" placeholder="粘贴对标视频 / 帖子链接" value="{{item}}" data-i="{{index}}" bindinput="onRefInput" />
+            <view class="ref-del" data-i="{{index}}" bindtap="removeRef">✕</view>
+          </view>
+          <view class="ref-add" bindtap="addRef">＋ 再加一条链接</view>
+        </view>
+        <view wx:if="{{view.refCount > 0}}" class="ref-hint">已添加 {{view.refCount}} 条对标链接，将用于差异化二次创作。</view>
+      </view>
+
+      <!-- 25 宫格 -->
+      <view wx:if="{{view.current === 'grid'}}">
+        <view class="grid-head">
+          <text class="font-mono grid-label">当前配对</text>
+          <text class="grid-clear" bindtap="clearGrid">清空</text>
+        </view>
+        <view class="grid-path">{{view.gridPath || '尚未配对（可跳过）'}}</view>
+        <view class="font-mono grid-label mb8">内圈 · 领域（可选）</view>
+        <view class="chip-wrap mb16">
+          <view wx:for="{{view.gridInner}}" wx:key="key" class="chip {{item.active ? 'chip-on' : 'chip-off'}}" data-k="inner" data-v="{{item.key}}" bindtap="toggle">{{item.key}}</view>
+        </view>
+        <view class="font-mono grid-label mb8">中圈 · 话题（可多选）</view>
+        <view class="chip-wrap mb16">
+          <view wx:for="{{view.gridMiddle}}" wx:key="key" class="chip {{item.active ? 'chip-on' : 'chip-off'}}" data-k="middle" data-v="{{item.key}}" bindtap="toggle">{{item.key}}</view>
+        </view>
+        <view class="font-mono grid-label mb8">外圈 · 人群 / 维度（可多选）</view>
+        <view class="chip-wrap">
+          <view wx:for="{{view.gridOuter}}" wx:key="key" class="chip {{item.active ? 'chip-on' : 'chip-off'}}" data-k="outer" data-v="{{item.key}}" bindtap="toggle">{{item.key}}</view>
+        </view>
+      </view>
+
+      <!-- 爆款元素 -->
+      <view wx:if="{{view.current === 'element'}}" class="el-grid">
+        <view
+          wx:for="{{view.viralElements}}"
+          wx:key="key"
+          class="el-card {{item.active ? 'el-on' : ''}}"
+          data-k="element"
+          data-v="{{item.key}}"
+          bindtap="toggle"
+        >
+          <view class="font-serif el-key">{{item.key}}</view>
+          <view class="el-hint">{{item.hint}}</view>
+        </view>
+      </view>
+
+      <!-- 脚本类型 -->
+      <view wx:if="{{view.current === 'scriptType'}}" class="col-gap">
+        <view
+          wx:for="{{view.scriptTypes}}"
+          wx:key="key"
+          class="card-option"
+          style="{{item.active ? 'background:' + item.bg + ';border-color:' + item.border + ';' : ''}}"
+          data-k="scriptType"
+          data-v="{{item.key}}"
+          bindtap="toggle"
+        >
+          <view class="card-head">
+            <view class="card-head-l">
+              <view class="dot" style="background: {{item.color}};"></view>
+              <text class="card-option-title">{{item.key}}</text>
+            </view>
+            <text class="tag" style="background: {{item.tagBg}};color: {{item.color}};">{{item.tag}}</text>
+          </view>
+          <view class="card-formula" style="color: {{item.color}};">{{item.formula}}</view>
+          <view class="card-option-desc">{{item.desc}}</view>
+        </view>
+      </view>
+
+      <!-- 确认 -->
+      <view wx:if="{{view.isReview}}">
+        <textarea class="textarea" value="{{view.topicDraft}}" placeholder="{{view.topicPh}}" bindinput="onTopicDraft" auto-height maxlength="500" />
+        <view class="prompt-box">
+          <view class="prompt-head">
+            <text class="font-serif prompt-title">配方 · 提示词{{view.promptEdited ? '（已手改）' : '预览'}}</text>
+            <view class="prompt-acts">
+              <view wx:if="{{view.promptEdited}}" class="prompt-btn" bindtap="resetPrompt">重置</view>
+              <view class="prompt-btn" bindtap="copyPrompt">复制</view>
+            </view>
+          </view>
+          <textarea class="prompt-body" value="{{view.shownPrompt}}" bindinput="onPrompt" maxlength="-1" />
+        </view>
+        <view class="prompt-hint">可直接在上方编辑提示词；改动会随本次生成一起提交，点「重置」可回到按参数自动拼装的版本。</view>
+      </view>
+    </view>
+    <view class="body-pad"></view>
+  </scroll-view>
+
+  <view class="builder-actions">
+    <view wx:if="{{!view.isReview}}" class="action-row">
+      <view class="btn-ghost" bindtap="skip">跳过</view>
+      <view class="btn-outline" bindtap="refine">继续细化 →</view>
+    </view>
+    <view class="btn-primary" bindtap="openCount">直接生成</view>
+    <view wx:if="{{view.isReview}}" class="restart" bindtap="restart">重新选一遍</view>
+  </view>
+
+  <!-- 条数 -->
+  <view wx:if="{{showCount}}" class="mask mask-end" catchtap="closeCount">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-handle"></view>
+      <view class="font-serif sheet-title">这一批生成多少条？</view>
+      <view class="sheet-sub">一次最多 20 条</view>
+      <view class="preset-row">
+        <view wx:for="{{presets}}" wx:key="*this" class="preset {{countN === item ? 'preset-on' : ''}}" data-n="{{item}}" bindtap="setPreset">{{item}}</view>
+      </view>
+      <view class="stepper">
+        <view class="stepper-btn" bindtap="decCount">−</view>
+        <view class="stepper-n">
+          <text class="font-serif stepper-num">{{countN}}</text>
+          <text class="stepper-unit">条</text>
+        </view>
+        <view class="stepper-btn" bindtap="incCount">+</view>
+      </view>
+      <view class="btn-primary" style="margin-top: 24px;" bindtap="confirmCount">开始生成 {{countN}} 条</view>
+      <view class="sheet-cancel" bindtap="closeCount">取消</view>
+    </view>
+  </view>
+
+  <!-- 跳过确认 -->
+  <view wx:if="{{askSkip}}" class="mask" catchtap="closeAsk">
+    <view class="dialog" catchtap="noop">
+      <view class="font-serif dialog-title">您没有选择任何选项</view>
+      <view class="dialog-desc">是需要跳过这一步吗？</view>
+      <view class="btn-primary" style="margin-top: 24px;" bindtap="confirmSkip">跳过这一步</view>
+      <view class="btn-ghost" style="margin-top: 10px;" bindtap="closeAsk">返回选择</view>
+    </view>
+  </view>
+</view>

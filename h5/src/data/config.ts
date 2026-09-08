@@ -1,0 +1,178 @@
+// 本文件是 GET /api/options 与 GET /api/persona 的兜底默认值，接口不可用时用它撑住界面。
+import type { Options, PersonaData } from "../api/types";
+
+export type { PersonaData };
+
+// 固定参数：人设配置（persona.yaml 的可视化默认值）
+export const persona: PersonaData = {
+  model: "靠谱顾问",
+  modelDesc: "理性沉稳不吹嘘，持续输出专业就职、职场干货，以及亲身实战 Vlog。",
+  identity:
+    "20 年大厂 IT/AI 从业者，涉猎财务、企业 ERP、互联网、金融行业相关 IT 技术。",
+  value:
+    "致力于为 IT/AI 从业者提供专业的成长规划、能力评估、技能调整与就业帮扶服务。",
+  tone: "客观理性、沉稳中肯、成长励志。",
+  audience: "20-35 岁年轻求职者、职场困惑者，以及年轻人的家长。",
+  needs: [
+    "不了解学什么才能赚到更多的钱",
+    "不了解目前什么行业吃香、有发展前景",
+    "不了解什么行业适合自己",
+    "不了解子女的专业有没有就业前景",
+    "岗位正在被 AI 取代，裁员焦虑",
+    "不知道子女做什么行业才体面",
+  ],
+  banned: ["保证就业", "包分配", "稳赚", "零风险", "内部名额"],
+  minWords: 500,
+  ctaStyle: "评论区留关键词领资料",
+  ctaAsset: "路线图",
+  platform: "抖音",
+};
+
+export type TopicType = { key: string; name: string; desc: string; tag: string };
+
+// 一、选题类型
+export const topicTypes: TopicType[] = [
+  {
+    key: "转化类",
+    name: "转化类选题",
+    tag: "变现核心",
+    desc: "聚焦 AI 转行前景、岗位解析、培训避坑等刚需话题，直击用户学习意愿，快速筛选高意向潜在学员。",
+  },
+  {
+    key: "破圈类",
+    name: "破圈类选题",
+    tag: "拉曝光",
+    desc: "围绕职场内卷、赛道抉择、成长感悟等普适话题，依托情绪共鸣打破圈层壁垒，持续注入新流量。",
+  },
+  {
+    key: "家长类",
+    name: "家长类选题",
+    tag: "撬报名",
+    desc: "从子女职业规划、核心技能价值、就业稳定性切入，立足家庭视角建立信任、消解防御心理。",
+  },
+];
+
+// 二、选题来源
+export const topicSources: { key: string; desc: string; ready: boolean; note?: string }[] = [
+  {
+    key: "客户咨询高频提问",
+    desc: "客户高频提问就是最好的选题方向，直面真实诉求，产出既有共鸣又利于转化的内容。",
+    ready: true,
+  },
+  {
+    key: "对标爆款拆解",
+    desc: "拆解同赛道高赞内容的底层逻辑，换视角、换话术、换案例做差异化二次创作。",
+    ready: false,
+    note: "需额外提供对标视频链接或文案原文，交由视频文案抽取能力处理。",
+  },
+  {
+    key: "评论私信需求挖掘",
+    desc: "深挖评论区、私信中的疑问、吐槽与建议，精准匹配潜在受众的好奇点、焦虑点。",
+    ready: false,
+    note: "需真实留言原文，不可编造。",
+  },
+  {
+    key: "行业热点借势融合",
+    desc: "紧跟行业新闻、职场趋势与社会热点，结合自身领域输出专业观点，借势流量风口。",
+    ready: true,
+  },
+];
+
+// 25 宫格
+export const gridInner = ["AI就业"];
+export const gridMiddle = ["求职", "面试", "专业", "薪资", "晋升", "岗位/职业", "培训", "AIGC"];
+export const gridOuter = [
+  "毕业生",
+  "求职者",
+  "待转行",
+  "专/本科生",
+  "机构",
+  "考公/编",
+  "失业/被裁",
+  "文/理科生",
+  "不同专业",
+  "普通人",
+  "找对象",
+  "大厂",
+  "投资成本",
+  "发展前景",
+  "职场",
+  "保障",
+];
+
+// 五、爆款元素句式
+export const viralElements = [
+  { key: "成本", hint: "便宜又有面子的 / 十分之一的时间金钱 / 花大钱干的" },
+  { key: "人群", hint: "想要（）但不具备条件的 / 因为（）现在可愁了" },
+  { key: "奇葩", hint: "外行人不知道的 / 脑回路有病的 / 黑心内幕操作" },
+  { key: "头牌", hint: "生意最好的 / 最贵的 / 明星名校名企" },
+  { key: "怀旧", hint: "20 年前的 / 如果能重来一次 / 历史风潮盘点" },
+  { key: "反差", hint: "反向操作 / 身份反差 / 古今穷富对照" },
+  { key: "最差", hint: "最没面子的 / 差评最多的 / 贬值最多的" },
+  { key: "荷尔蒙", hint: "好找对象的 / 魅力变强的" },
+];
+
+// 六、脚本类型 —— 四类万能脚本（含批量配比）
+export const scriptTypes = [
+  {
+    key: "痛点科普",
+    ratio: 4,
+    formula: "开头抛痛点 + 中间讲干货 + 结尾软引导",
+    goal: "白嫖你",
+    desc: "用硬核干货建立信任壁垒，最后以解决方案自然承接，是高效变现的核心框架。",
+  },
+  {
+    key: "Vlog 叙事",
+    ratio: 1,
+    formula: "开场引入 + 片段拼接 + 结尾感悟",
+    goal: "了解你",
+    desc: "以沉浸式镜头语言串联碎片化场景，弱化刻意感，通过结尾情绪升华提升温度。",
+  },
+  {
+    key: "聊天纪实",
+    ratio: 3,
+    formula: "场景引入 + 对话片段 + 观点总结",
+    goal: "信任你",
+    desc: "还原真实沟通场景，以实景对话增强可信度，兼顾故事质感与专业说服力。",
+  },
+  {
+    key: "话题共鸣",
+    ratio: 2,
+    formula: "抛出话题 + 表达观点 + 引导评论",
+    goal: "喜欢你",
+    desc: "用争议或共情话题做钩子，结尾开放提问带动互动，拉高平台推荐权重。",
+  },
+];
+
+// 生成流程步骤
+export const workflow = [
+  { n: 1, title: "选择选题类型", desc: "确定内容的战略意图" },
+  { n: 2, title: "确定选题来源", desc: "从哪里挖到真实需求" },
+  { n: 3, title: "玩转 25 宫格", desc: "内圈链接中/外圈，引出话题" },
+  { n: 4, title: "套爆款元素句式", desc: "让平平的话题变得抓人" },
+  { n: 5, title: "生成标题", desc: "选题≠标题，标题只为停留" },
+  { n: 6, title: "生成脚本文案", desc: "套用四类万能脚本结构" },
+  { n: 7, title: "去除 AI 味", desc: "写出会呼吸的口播文案" },
+];
+
+export const deaiPrompt = `请全面化身为顶级语言风格编辑、真人表达校准师与 AI 痕迹清除专家。
+在不改变原文事实、核心观点和重要信息的前提下，对全文进行深度重写。
+删除空洞开场、正确但没有信息量的废话、机械连接词、过度完整的排比、重复总结、虚假的情绪升华和教科书式表达。
+重新调整句子长短、停顿节奏、观点顺序和用词密度，加入符合语境的真实细节、自然转折和明确立场，允许存在克制的不完美。
+禁止堆砌网络热词、故意口语化、编造个人经历、增加原文没有的事实，以及把文章改成另一种模板化文风。`;
+
+// 会触发「对标视频」步骤的选题来源
+export const refSources = ["对标爆款拆解", "评论私信需求挖掘"];
+
+// GET /api/options 的兜底默认值
+export const defaultOptions: Options = {
+  topicTypes,
+  topicSources,
+  gridInner,
+  gridMiddle,
+  gridOuter,
+  viralElements,
+  scriptTypes,
+  refSources,
+  deaiPrompt,
+};
